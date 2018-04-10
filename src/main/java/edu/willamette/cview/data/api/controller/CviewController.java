@@ -24,8 +24,8 @@ public class CviewController {
 			@RequestParam(value = "name") String searchTerm,
 			@RequestParam(value = "offset") String offset) {
 
-		ContentdmRepository contentdmRepository = new ContentdmRepository(searchTerm, offset);
-		NormalizedResult result = contentdmRepository.execQuery();
+		ContentdmRepository contentdmRepository = new ContentdmRepository();
+		NormalizedResult result = contentdmRepository.execQuery(searchTerm, offset);
 		ContentdmResponse response = new ContentdmResponse(result);
 		response.add(
 				linkTo(methodOn(CviewController.class).search(searchTerm, offset))

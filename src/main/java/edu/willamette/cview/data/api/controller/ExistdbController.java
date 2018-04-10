@@ -21,12 +21,12 @@ public class ExistdbController {
     @RequestMapping(value="/exist", method=GET)
 
     @ResponseBody
-    public HttpEntity<ExistDbResponse> greeting(
+    public HttpEntity<ExistDbResponse> search(
             @RequestParam(value = "name", required = false, defaultValue = "Bob") String name) {
 
-        ExistDbResponse greeting = new ExistDbResponse(String.format(TEMPLATE, name));
-        greeting.add(linkTo(methodOn(CviewController.class).greeting(name)).withSelfRel());
+        ExistDbResponse response = new ExistDbResponse(String.format(TEMPLATE, name));
+        response.add(linkTo(methodOn(ExistdbController.class).search(name)).withSelfRel());
 
-        return new ResponseEntity<>(greeting, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

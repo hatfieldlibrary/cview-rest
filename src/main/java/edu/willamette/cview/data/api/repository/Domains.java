@@ -4,10 +4,10 @@ public enum Domains {
 
     CONDM("condm.willamette.edu:81",
             "dmwebservices/index.php?q=dmQuery",
-            "all",
+            "manuscripts!aphotos!rare!hfmanw!glee",
             "CISOSEARCHALL^{$query}^all^AND!",
             "nosort",
-            "source!descri!title!creato!bdate",
+            "source!descri!title!creato!date",
             "10"),
 
     EXIST("exist.willamette.edu:8080",

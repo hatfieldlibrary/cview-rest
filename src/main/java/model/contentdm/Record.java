@@ -9,7 +9,7 @@ public class Record {
     private String descri;
     private String title;
     private String source;
-    private String bdate;
+    private String date;
     private String find;
 
     public Record() {}
@@ -70,12 +70,12 @@ public class Record {
         this.source = source;
     }
 
-    public String getBdate() {
-        return bdate;
+    public String getDate() {
+        return date;
     }
 
-    public void setBdate(String bdate) {
-        this.bdate = bdate;
+    public void setDate(String bdate) {
+        this.date = bdate;
     }
 
     public String getFind() {

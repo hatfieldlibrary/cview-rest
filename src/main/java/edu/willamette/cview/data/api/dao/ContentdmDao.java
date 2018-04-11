@@ -5,6 +5,8 @@ import edu.willamette.cview.data.api.repository.Domains;
 import model.contentdm.Result;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,6 +15,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+@Component
 public class ContentdmDao {
 
     Logger log = LogManager.getLogger(ContentdmDao.class);

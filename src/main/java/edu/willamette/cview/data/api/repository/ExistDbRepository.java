@@ -1,37 +1,33 @@
 package edu.willamette.cview.data.api.repository;
 
-import edu.willamette.cview.data.api.dao.ContentdmDao;
+import edu.willamette.cview.data.api.dao.ExistdbDao;
 import model.NormalizedPager;
 import model.NormalizedRecord;
 import model.NormalizedResult;
-import model.contentdm.Record;
-import model.contentdm.Result;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
+import model.existdb.Record;
+import model.existdb.CombinedResult;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class ContentdmRepository implements RepositoryInterface {
-
-    Logger log = LogManager.getLogger(ContentdmRepository.class);
+public class ExistDbRepository implements RepositoryInterface {
 
     @Autowired
-    ContentdmDao contentdmDao;
+    ExistdbDao existdbDao;
 
     @Override
-    @Cacheable("cdm")
     public NormalizedResult execQuery(String terms, String offset) {
 
-        Result cdmResult = contentdmDao.execQuery(terms, offset);
-        return normalize(cdmResult);
+        CombinedResult result = existdbDao.execQuery(terms, offset);
+        return normalize(result);
+
     }
 
-    private NormalizedResult normalize(Result results) {
+    private NormalizedResult normalize(CombinedResult results) {
 
         NormalizedResult normalizedResult = new NormalizedResult();
         List<NormalizedRecord> mappedResult = new ArrayList<>();
@@ -56,5 +52,6 @@ public class ContentdmRepository implements RepositoryInterface {
 
         return normalizedResult;
     }
+
 
 }

@@ -1,6 +1,11 @@
 package edu.willamette.cview.data.api.controller;
 
 import edu.willamette.cview.data.api.repository.ExistDbResponse;
+import edu.willamette.cview.data.api.repository.Pagination;
+import edu.willamette.cview.data.api.repository.RepositoryInterface;
+import model.NormalizedResult;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,17 +21,34 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 @RestController
 public class ExistdbController {
 
-    private static final String TEMPLATE = "Hello from exist-db, %s!";
+    @Autowired
+    RepositoryInterface existDbRepository;
+
+    @Autowired
+    Pagination pagination;
 
     @RequestMapping(value="/exist", method=GET)
-
     @ResponseBody
-    public HttpEntity<ExistDbResponse> search(
-            @RequestParam(value = "name", required = false, defaultValue = "Bob") String name) {
+    public HttpEntity<ExistDbResponse> search(@RequestParam(value = "term") String searchTerm,
+                                              @RequestParam(value = "offset") String offset) {
 
-        ExistDbResponse response = new ExistDbResponse(String.format(TEMPLATE, name));
-        response.add(linkTo(methodOn(ExistdbController.class).search(name)).withSelfRel());
+        NormalizedResult result = existDbRepository.execQuery(searchTerm, offset);
+        ExistDbResponse response = new ExistDbResponse(result);
+        response.add(linkTo(methodOn(ExistdbController.class).search(searchTerm, offset)).withSelfRel());
+        boolean hasNext = pagination.hasNext(result.getPager(), offset);
+        boolean hasPrev = pagination.hasPrev(offset);
+        if (hasNext) {
+            String nextOffset = pagination.getOffset("next", offset, result.getPager());
+            Link ordersLink = linkTo(methodOn(CdmController.class).search(searchTerm, nextOffset)).withRel("next");
+            response.add(ordersLink);
+        }
+        if (hasPrev) {
+            String prevOffset = pagination.getOffset("prev", offset, result.getPager());
+            Link ordersLink = linkTo(methodOn(CdmController.class).search(searchTerm, prevOffset)).withRel("prev");
+            response.add(ordersLink);
+        }
 
         return new ResponseEntity<>(response, HttpStatus.OK);
+
     }
 }

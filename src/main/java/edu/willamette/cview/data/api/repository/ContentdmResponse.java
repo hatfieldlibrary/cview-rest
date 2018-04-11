@@ -5,16 +5,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import model.NormalizedResult;
 import model.contentdm.Result;
 import org.springframework.hateoas.ResourceSupport;
+import org.springframework.stereotype.Component;
 
 public class ContentdmResponse extends ResourceSupport {
-
 
     private final NormalizedResult content;
 
     @JsonCreator
-    public ContentdmResponse(@JsonProperty("content") NormalizedResult content)
+    public ContentdmResponse(@JsonProperty("content") NormalizedResult content) {
 
-    {
         this.content = content;
     }
 

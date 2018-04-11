@@ -1,9 +1,11 @@
 package model;
 
 import io.reactivex.annotations.NonNull;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class NormalizedResult {
 
     @NonNull

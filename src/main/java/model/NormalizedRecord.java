@@ -1,5 +1,9 @@
 package model;
 
+import model.existdb.Hits;
+
+import java.util.List;
+
 public class NormalizedRecord {
 
     private String collection;
@@ -9,6 +13,7 @@ public class NormalizedRecord {
     private String title;
     private String source;
     private String date;
+    private List<Hits> hits;
     private String locator;
 
     public String getCollection() {
@@ -75,5 +80,11 @@ public class NormalizedRecord {
         this.locator = locator;
     }
 
+    public List<Hits> getHits() {
+        return hits;
+    }
 
+    public void setHits(List<Hits> hits) {
+        this.hits = hits;
+    }
 }

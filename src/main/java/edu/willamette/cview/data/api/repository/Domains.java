@@ -11,12 +11,12 @@ public enum Domains {
             "10"),
 
     EXIST("exist.willamette.edu:8080",
+            "exist/apps/METSALTO/api/SearchQuery.xquery?type=search&desc=add",
+            "scene,wallulah,collegian,handbooks,",
+            "all^{$query}^and",
             "",
             "",
-            "",
-            "",
-            "",
-            "");
+            "10");
 
     private final String host;
     private final String collection;

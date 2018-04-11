@@ -5,7 +5,8 @@ import model.NormalizedPager;
 import model.NormalizedRecord;
 import model.NormalizedResult;
 
-import model.existdb.Record;
+import model.existdb.CollectionResults;
+import model.existdb.Item;
 import model.existdb.CombinedResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,35 +24,64 @@ public class ExistDbRepository implements RepositoryInterface {
     public NormalizedResult execQuery(String terms, String offset) {
 
         CombinedResult result = existdbDao.execQuery(terms, offset);
-        return normalize(result);
+        return normalize(result, offset);
 
     }
 
-    private NormalizedResult normalize(CombinedResult results) {
+    private NormalizedResult normalize(CombinedResult results, String offset) {
 
         NormalizedResult normalizedResult = new NormalizedResult();
         List<NormalizedRecord> mappedResult = new ArrayList<>();
-        for (Record record : results.getRecords()) {
-            NormalizedRecord normalizedRecord = new NormalizedRecord();
-            normalizedRecord.setCollection(record.getCollection());
-            normalizedRecord.setDate(record.getDate());
-            normalizedRecord.setDescription(record.getDescri());
-            normalizedRecord.setId(record.getPointer());
-            normalizedRecord.setFiletype(record.getFiletype());
-            normalizedRecord.setLocator(record.getFind());
-            normalizedRecord.setSource(record.getSource());
-            normalizedRecord.setTitle(record.getTitle());
-            mappedResult.add(normalizedRecord);
+        Integer total = 0;
+        for (CollectionResults coll : results.getCollectionResults()) {
+            total = compareTotal(total, coll.getResult().getTotal());
+            if (coll.getResult().getItem() != null) {
+                for (Item item : coll.getResult().getItem()) {
+                    NormalizedRecord normalizedRecord = new NormalizedRecord();
+                    normalizedRecord.setCollection(item.getCollection());
+                    normalizedRecord.setDate(item.getDisplay_date());
+                    //  normalizedRecord.setDescription(item.getDescription());
+                    normalizedRecord.setId(item.getDate());
+                    normalizedRecord.setHits(item.getHits());
+                    normalizedRecord.setFiletype("xml");
+                    normalizedRecord.setLocator(item.getDate());
+                    normalizedRecord.setSource(getCollectionName(item.getCollection()));
+                    normalizedRecord.setTitle(item.getTitle());
+                    mappedResult.add(normalizedRecord);
+                }
+            }
         }
         normalizedResult.setRecords(mappedResult);
         NormalizedPager normalizedPager = new NormalizedPager();
-        normalizedPager.setPagingIncrement(results.getPager().getMaxrecs());
-        normalizedPager.setStartIndex(results.getPager().getStart());
-        normalizedPager.setTotalRecs(results.getPager().getTotal());
+        normalizedPager.setPagingIncrement("10");
+        normalizedPager.setStartIndex(offset);
+        normalizedPager.setTotalRecs(total);
         normalizedResult.setPager(normalizedPager);
 
         return normalizedResult;
     }
 
+    private Integer compareTotal(Integer total, String latestTotal) {
+
+        if (total < Integer.valueOf(latestTotal)) {
+            return Integer.valueOf(latestTotal);
+        }
+        return total;
+
+    }
+    private String getCollectionName(String coll) {
+
+        switch(coll) {
+            case "collegian": return "Willamette University Collegian";
+            case "wallulah": return "Wallulah (Student Yearbook)";
+            case "scene": return "Alumni Publications";
+            case "bulletinscatalogs": return "Willamette University Catalogs & Bulletins";
+            case "commencement": return "Commencement Programs";
+            case "puritan": return "Willamette University Puritan";
+            case "scrapbooks": return "Scrapbooks";
+            case "handbooks": return "Student Handbooks - College of Liberal Arts";
+            default: return "";
+        }
+    }
 
 }

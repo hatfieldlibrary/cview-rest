@@ -1,8 +1,13 @@
 package model.existdb;
+
+import com.google.gson.annotations.Expose;
+
 public class CollectionResults
 {
+    @Expose
     private String collectionName;
 
+    @Expose
     private Result result;
 
     public void setCollectionName(String collectionName){

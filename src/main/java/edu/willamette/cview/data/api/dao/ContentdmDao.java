@@ -5,7 +5,6 @@ import edu.willamette.cview.data.api.repository.Domains;
 import model.contentdm.Result;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
@@ -20,13 +19,13 @@ public class ContentdmDao {
 
     Logger log = LogManager.getLogger(ContentdmDao.class);
 
-    String cdmHost;
-    String collection;
-    String query;
-    String sort;
-    String rootPath;
-    String returnFields;
-    String setSize;
+    final String cdmHost;
+    final String collection;
+    final String query;
+    final String sort;
+    final String rootPath;
+    final String returnFields;
+    final String setSize;
 
     public ContentdmDao() {
 

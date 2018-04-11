@@ -1,10 +1,14 @@
 package model.existdb;
-import java.util.ArrayList;
+
+import com.google.gson.annotations.Expose;
+
 import java.util.List;
 public class CombinedResult
 {
+    @Expose
     private String collectionsSearched;
 
+    @Expose
     private List<CollectionResults> collectionResults;
 
     public void setCollectionsSearched(String collectionsSearched){

@@ -1,24 +1,37 @@
 package model.existdb;
+
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.JsonAdapter;
+import edu.willamette.cview.data.api.dao.HitsArrayAdapter;
+
+import java.util.List;
+
 public class Item
 {
-    private DateTime date;
+    @Expose
+    private String date;
 
+    @Expose
     private String collection;
 
+    @Expose
     private String title;
 
     private String objid;
 
-    private String display-date;
+    @Expose
+    private String display_date;
 
-    private Hits hits;
+    @JsonAdapter(HitsArrayAdapter.class)
+    @Expose
+    private List<Hits> hits;
 
     private Summaries summaries;
 
-    public void setDate(DateTime date){
+    public void setDate(String date){
         this.date = date;
     }
-    public DateTime getDate(){
+    public String getDate(){
         return this.date;
     }
     public void setCollection(String collection){
@@ -39,16 +52,16 @@ public class Item
     public String getObjid(){
         return this.objid;
     }
-    public void setDisplay-date(String display-date){
-    this.display-date = display-date;
+    public void setDisplay_date(String display_date){
+    this.display_date = display_date;
 }
-    public String getDisplay-date(){
-    return this.display-date;
+    public String getDisplay_date(){
+    return this.display_date;
 }
-    public void setHits(Hits hits){
+    public void setHits(List<Hits> hits){
         this.hits = hits;
     }
-    public Hits getHits(){
+    public List<Hits> getHits(){
         return this.hits;
     }
     public void setSummaries(Summaries summaries){

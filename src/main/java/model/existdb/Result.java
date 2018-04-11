@@ -1,10 +1,14 @@
 package model.existdb;
-import java.util.ArrayList;
+
+import com.google.gson.annotations.Expose;
+
 import java.util.List;
 public class Result
 {
+    @Expose
     private String total;
 
+    @Expose
     private List<Item> item;
 
     public void setTotal(String total){

@@ -69,12 +69,12 @@ public class ContentdmDao {
             while ((inputLine = in.readLine()) != null) {
                 content.append(inputLine);
             }
-
             cdmResult = gson.fromJson(content.toString(), Result.class);
             in.close();
             con.disconnect();
 
         } catch (IOException e) {
+            log.error("Unable to retrieve data for url: " + url);
             e.printStackTrace();
         }
         return (cdmResult);
@@ -90,12 +90,10 @@ public class ContentdmDao {
      */
     private String formatQuery(String terms, String offset, String mode, String requestCollections) {
 
-
-
         // If specific collections are provided in the request,
         // use them and not the default collection value.
         if (!requestCollections.contentEquals("all")) {
-            collections = requestCollections;
+            collections = requestCollections.replace(",", "!");
         }
 
         String url = "http://" +

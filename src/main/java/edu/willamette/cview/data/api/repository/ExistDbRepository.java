@@ -9,6 +9,7 @@ import edu.willamette.cview.data.api.model.existdb.CollectionResults;
 import edu.willamette.cview.data.api.model.existdb.Item;
 import edu.willamette.cview.data.api.model.existdb.CombinedResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ public class ExistDbRepository implements RepositoryInterface {
     ExistdbDao existdbDao;
 
     @Override
+    @Cacheable("search")
     public NormalizedResult execQuery(String terms, String offset, String mode, String collections) {
 
         CombinedResult result = existdbDao.execQuery(terms, offset, mode, collections);

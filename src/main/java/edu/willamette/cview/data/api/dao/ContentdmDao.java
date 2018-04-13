@@ -47,9 +47,9 @@ public class ContentdmDao {
 
     }
 
-    public Result execQuery (String terms, String offset) {
+    public Result execQuery (String terms, String offset, String mode) {
 
-        String queryUrl = formatQuery(terms, offset);
+        String queryUrl = formatQuery(terms, offset, mode);
         Gson gson = new Gson();
         URL url = null;
         try {
@@ -78,7 +78,15 @@ public class ContentdmDao {
         return (cdmResult);
     }
 
-    private String formatQuery(String terms, String offset) {
+    /**
+     * Formats url for contentdm api queries.  Supported modes are 'all', 'any', and 'exact'.
+     * The 'exact' contentdm search mode is derived from the generic input mode 'phrase'.
+     * @param terms the terms to search
+     * @param offset the offset value for the search (0-based offsets)
+     * @param mode the query mode
+     * @return the url for an exist-db query
+     */
+    private String formatQuery(String terms, String offset, String mode) {
 
         String url = "http://" +
                 cdmHost + "/" +
@@ -91,8 +99,17 @@ public class ContentdmDao {
                 offset +
                 "/1/0/0/0/0/0/json";
 
+        String cdmMode = getCdmMode(mode);
+
         terms = terms.replace(" ", "+");
-        return url.replace("{$query}", terms);
+        return url.replace("{$query}", terms).replace("{$mode}", cdmMode);
+    }
+
+    private String getCdmMode(String mode) {
+        if (mode.contentEquals("phrase")) {
+            return "exact";
+        }
+        return mode;
     }
 
 }

@@ -21,9 +21,9 @@ public class ExistDbRepository implements RepositoryInterface {
     ExistdbDao existdbDao;
 
     @Override
-    public NormalizedResult execQuery(String terms, String offset) {
+    public NormalizedResult execQuery(String terms, String offset, String mode) {
 
-        CombinedResult result = existdbDao.execQuery(terms, offset);
+        CombinedResult result = existdbDao.execQuery(terms, offset, mode);
         return normalize(result, offset);
 
     }

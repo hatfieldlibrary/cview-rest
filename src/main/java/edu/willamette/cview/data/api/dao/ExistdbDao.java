@@ -33,9 +33,9 @@ public class ExistdbDao {
         setSize = Domains.EXIST.getSetSize();
     }
 
-    public CombinedResult execQuery(String terms, String offset) {
+    public CombinedResult execQuery(String terms, String offset, String mode) {
 
-        String queryUrl = formatQuery(terms, offset);
+        String queryUrl = formatQuery(terms, offset, mode);
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         URL url = null;
         try {
@@ -64,7 +64,14 @@ public class ExistdbDao {
 
     }
 
-    private String formatQuery(String terms, String offset) {
+    /**
+     * Formats url for exist-db api queries.  Supported modes are 'all', 'any', and 'phrase'.
+     * @param terms the terms to search
+     * @param offset the offset value for the search (1-based offsets)
+     * @param mode the query mode
+     * @return the url for an exist-db query
+     */
+    private String formatQuery(String terms, String offset, String mode) {
 
         String url = "http://" +
                 existHost + "/" +
@@ -75,6 +82,6 @@ public class ExistdbDao {
                 offset;
 
         terms = terms.replace(" ", "+");
-        return url.replace("{$query}", terms);
+        return url.replace("{$query}", terms).replace("{$mode}", mode);
     }
 }

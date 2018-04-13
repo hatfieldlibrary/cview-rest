@@ -31,23 +31,24 @@ public class CdmController {
 	@ResponseBody
 	public HttpEntity<ContentdmResponse> search(
 			@RequestParam(value = "term") String searchTerm,
-			@RequestParam(value = "offset") String offset) {
+			@RequestParam(value = "offset") String offset,
+			@RequestParam(value="mode", defaultValue = "all") String mode ) {
 
-		NormalizedResult result = contentdmRepository.execQuery(searchTerm, offset);
+		NormalizedResult result = contentdmRepository.execQuery(searchTerm, offset, mode);
 		ContentdmResponse response = new ContentdmResponse(result);
 		response.add(
-				linkTo(methodOn(CdmController.class).search(searchTerm, offset))
+				linkTo(methodOn(CdmController.class).search(searchTerm, offset, mode))
 				.withSelfRel());
 		boolean hasNext = pagination.hasNext(result.getPager(), offset);
 		boolean hasPrev = pagination.hasPrev(offset);
 		if (hasNext) {
 			String nextOffset = pagination.getOffset("next", offset, result.getPager());
-			Link ordersLink = linkTo(methodOn(CdmController.class).search(searchTerm, nextOffset)).withRel("next");
+			Link ordersLink = linkTo(methodOn(CdmController.class).search(searchTerm, nextOffset, mode)).withRel("next");
 			response.add(ordersLink);
 		}
 		if (hasPrev) {
 			String prevOffset = pagination.getOffset("prev", offset, result.getPager());
-			Link ordersLink = linkTo(methodOn(CdmController.class).search(searchTerm, prevOffset)).withRel("prev");
+			Link ordersLink = linkTo(methodOn(CdmController.class).search(searchTerm, prevOffset, mode)).withRel("prev");
 			response.add(ordersLink);
 		}
 		return new ResponseEntity<>(response, HttpStatus.OK);

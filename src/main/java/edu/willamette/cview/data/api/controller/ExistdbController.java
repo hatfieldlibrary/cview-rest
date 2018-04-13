@@ -30,21 +30,22 @@ public class ExistdbController {
     @RequestMapping(value="/exist", method=GET)
     @ResponseBody
     public HttpEntity<ExistDbResponse> search(@RequestParam(value = "term") String searchTerm,
-                                              @RequestParam(value = "offset") String offset) {
+                                              @RequestParam(value = "offset") String offset,
+                                              @RequestParam(value="mode", defaultValue = "all") String mode ) {
 
-        NormalizedResult result = existDbRepository.execQuery(searchTerm, offset);
+        NormalizedResult result = existDbRepository.execQuery(searchTerm, offset, mode);
         ExistDbResponse response = new ExistDbResponse(result);
-        response.add(linkTo(methodOn(ExistdbController.class).search(searchTerm, offset)).withSelfRel());
+        response.add(linkTo(methodOn(ExistdbController.class).search(searchTerm, offset, mode)).withSelfRel());
         boolean hasNext = pagination.hasNext(result.getPager(), offset);
         boolean hasPrev = pagination.hasPrev(offset);
         if (hasNext) {
             String nextOffset = pagination.getOffset("next", offset, result.getPager());
-            Link ordersLink = linkTo(methodOn(CdmController.class).search(searchTerm, nextOffset)).withRel("next");
+            Link ordersLink = linkTo(methodOn(CdmController.class).search(searchTerm, nextOffset, mode)).withRel("next");
             response.add(ordersLink);
         }
         if (hasPrev) {
             String prevOffset = pagination.getOffset("prev", offset, result.getPager());
-            Link ordersLink = linkTo(methodOn(CdmController.class).search(searchTerm, prevOffset)).withRel("prev");
+            Link ordersLink = linkTo(methodOn(CdmController.class).search(searchTerm, prevOffset, mode)).withRel("prev");
             response.add(ordersLink);
         }
 

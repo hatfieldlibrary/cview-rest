@@ -4,5 +4,5 @@ import edu.willamette.cview.data.api.model.NormalizedResult;
 
 public interface RepositoryInterface {
 
-    NormalizedResult execQuery(String terms, String offset);
+    NormalizedResult execQuery(String terms, String offset, String mode);
 }

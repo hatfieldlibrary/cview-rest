@@ -5,7 +5,7 @@ public enum Domains {
     CONDM("condm.willamette.edu:81",
             "dmwebservices/index.php?q=dmQuery",
             "manuscripts!aphotos!rare!hfmanw!glee",
-            "CISOSEARCHALL^{$query}^all^AND!",
+            "CISOSEARCHALL^{$query}^{$mode}^AND!",
             "nosort",
             "source!descri!title!creato!date",
             "10"),
@@ -13,7 +13,7 @@ public enum Domains {
     EXIST("exist.willamette.edu:8080",
             "exist/apps/METSALTO/api/SearchQuery.xquery?type=search&desc=add",
             "scene,wallulah,collegian,handbooks,",
-            "all^{$query}^and",
+            "all^{$query}^{$mode}^and",
             "",
             "",
             "10");
@@ -58,6 +58,7 @@ public enum Domains {
     public final String getReturnFields() {
         return this.returnFields;
     }
+
     public final String getSetSize() {
         return this.setSize;
     }

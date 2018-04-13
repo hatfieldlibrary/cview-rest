@@ -5,6 +5,7 @@ import edu.willamette.cview.data.api.repository.Domains;
 import edu.willamette.cview.data.api.model.contentdm.Result;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
@@ -20,17 +21,18 @@ public class ContentdmDao {
     Logger log = LogManager.getLogger(ContentdmDao.class);
 
     private final String cdmHost;
-    private final String collection;
     private final String query;
     private final String sort;
     private final String rootPath;
     private final String returnFields;
     private final String setSize;
 
+    @Value("${cdm.default}")
+    String collections;
+
     public ContentdmDao() {
 
         cdmHost = Domains.CONDM.getHost();
-        collection = Domains.CONDM.getCollection();
         query = Domains.CONDM.getQuery();
         sort = Domains.CONDM.getSort();
         rootPath = Domains.CONDM.getRootPath();
@@ -47,9 +49,9 @@ public class ContentdmDao {
 
     }
 
-    public Result execQuery (String terms, String offset, String mode) {
+    public Result execQuery (String terms, String offset, String mode, String collections) {
 
-        String queryUrl = formatQuery(terms, offset, mode);
+        String queryUrl = formatQuery(terms, offset, mode, collections);
         Gson gson = new Gson();
         URL url = null;
         try {
@@ -86,12 +88,20 @@ public class ContentdmDao {
      * @param mode the query mode
      * @return the url for an exist-db query
      */
-    private String formatQuery(String terms, String offset, String mode) {
+    private String formatQuery(String terms, String offset, String mode, String requestCollections) {
+
+
+
+        // If specific collections are provided in the request,
+        // use them and not the default collection value.
+        if (!requestCollections.contentEquals("all")) {
+            collections = requestCollections;
+        }
 
         String url = "http://" +
                 cdmHost + "/" +
                 rootPath + "/" +
-                collection + "/" +
+                collections + "/" +
                 query + "/" +
                 returnFields + "/" +
                 sort + "/" +

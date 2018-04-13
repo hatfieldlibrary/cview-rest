@@ -25,9 +25,9 @@ public class ContentdmRepository implements RepositoryInterface {
 
     @Override
     @Cacheable("cdm")
-    public NormalizedResult execQuery(String terms, String offset, String mode) {
+    public NormalizedResult execQuery(String terms, String offset, String mode, String collections) {
 
-        Result cdmResult = contentdmDao.execQuery(terms, reduceOffset(offset), mode);
+        Result cdmResult = contentdmDao.execQuery(terms, reduceOffset(offset), mode, collections);
         return normalize(cdmResult);
     }
 
@@ -35,24 +35,28 @@ public class ContentdmRepository implements RepositoryInterface {
 
         NormalizedResult normalizedResult = new NormalizedResult();
         List<NormalizedRecord> mappedResult = new ArrayList<>();
-        for (Record record : results.getRecords()) {
-            NormalizedRecord normalizedRecord = new NormalizedRecord();
-            normalizedRecord.setCollection(record.getCollection());
-            normalizedRecord.setDate(record.getDate());
-            normalizedRecord.setDescription(record.getDescri());
-            normalizedRecord.setId(record.getPointer());
-            normalizedRecord.setFiletype(record.getFiletype());
-            normalizedRecord.setLocator(record.getFind());
-            normalizedRecord.setSource(record.getSource());
-            normalizedRecord.setTitle(record.getTitle());
-            mappedResult.add(normalizedRecord);
+        try {
+            for (Record record : results.getRecords()) {
+                NormalizedRecord normalizedRecord = new NormalizedRecord();
+                normalizedRecord.setCollection(record.getCollection());
+                normalizedRecord.setDate(record.getDate());
+                normalizedRecord.setDescription(record.getDescri());
+                normalizedRecord.setId(record.getPointer());
+                normalizedRecord.setFiletype(record.getFiletype());
+                normalizedRecord.setLocator(record.getFind());
+                normalizedRecord.setSource(record.getSource());
+                normalizedRecord.setTitle(record.getTitle());
+                mappedResult.add(normalizedRecord);
+            }
+            normalizedResult.setRecords(mappedResult);
+            NormalizedPager normalizedPager = new NormalizedPager();
+            normalizedPager.setPagingIncrement(results.getPager().getMaxrecs());
+            normalizedPager.setStartIndex(increaseOffset(results.getPager().getStart()));
+            normalizedPager.setTotalRecs(results.getPager().getTotal());
+            normalizedResult.setPager(normalizedPager);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        normalizedResult.setRecords(mappedResult);
-        NormalizedPager normalizedPager = new NormalizedPager();
-        normalizedPager.setPagingIncrement(results.getPager().getMaxrecs());
-        normalizedPager.setStartIndex(increaseOffset(results.getPager().getStart()));
-        normalizedPager.setTotalRecs(results.getPager().getTotal());
-        normalizedResult.setPager(normalizedPager);
 
         return normalizedResult;
     }

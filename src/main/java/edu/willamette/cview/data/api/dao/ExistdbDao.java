@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import edu.willamette.cview.data.api.repository.Domains;
 import edu.willamette.cview.data.api.model.existdb.CombinedResult;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
@@ -18,24 +19,24 @@ import java.net.URL;
 public class ExistdbDao {
 
     private final String existHost;
-    private final String collection;
     private final String query;
     private final String rootPath;
     private final String setSize;
 
+    @Value("${exist.default}")
+    String collections;
 
     public ExistdbDao() {
 
         existHost = Domains.EXIST.getHost();
-        collection = Domains.EXIST.getCollection();
         query = Domains.EXIST.getQuery();
         rootPath = Domains.EXIST.getRootPath();
         setSize = Domains.EXIST.getSetSize();
     }
 
-    public CombinedResult execQuery(String terms, String offset, String mode) {
+    public CombinedResult execQuery(String terms, String offset, String mode, String collections) {
 
-        String queryUrl = formatQuery(terms, offset, mode);
+        String queryUrl = formatQuery(terms, offset, mode, collections);
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         URL url = null;
         try {
@@ -71,12 +72,19 @@ public class ExistdbDao {
      * @param mode the query mode
      * @return the url for an exist-db query
      */
-    private String formatQuery(String terms, String offset, String mode) {
+    private String formatQuery(String terms, String offset, String mode, String requestCollections) {
+
+        // If specific collections are provided in the request,
+        // use them and not the default collection value.
+        if (!requestCollections.contentEquals("all")) {
+            collections = requestCollections;
+        }
+
 
         String url = "http://" +
                 existHost + "/" +
                 rootPath + "&collection=" +
-                collection + "&q=" +
+                collections + "&q=" +
                 query + "&records=" +
                 setSize + "&start=" +
                 offset;

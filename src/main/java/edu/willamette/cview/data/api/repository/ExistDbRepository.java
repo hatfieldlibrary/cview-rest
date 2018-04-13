@@ -21,9 +21,9 @@ public class ExistDbRepository implements RepositoryInterface {
     ExistdbDao existdbDao;
 
     @Override
-    public NormalizedResult execQuery(String terms, String offset, String mode) {
+    public NormalizedResult execQuery(String terms, String offset, String mode, String collections) {
 
-        CombinedResult result = existdbDao.execQuery(terms, offset, mode);
+        CombinedResult result = existdbDao.execQuery(terms, offset, mode, collections);
         return normalize(result, offset);
 
     }
@@ -33,33 +33,39 @@ public class ExistDbRepository implements RepositoryInterface {
         NormalizedResult normalizedResult = new NormalizedResult();
         List<NormalizedRecord> mappedResult = new ArrayList<>();
         Integer total = 0;
-        for (CollectionResults coll : results.getCollectionResults()) {
-            total = compareTotal(total, coll.getResult().getTotal());
-            if (coll.getResult().getItem() != null) {
-                for (Item item : coll.getResult().getItem()) {
-                    NormalizedRecord normalizedRecord = new NormalizedRecord();
-                    normalizedRecord.setCollection(item.getCollection());
-                    normalizedRecord.setDate(item.getDisplay_date());
-                    //  normalizedRecord.setDescription(item.getDescription());
-                    normalizedRecord.setId(item.getDate());
-                    normalizedRecord.setHits(item.getHits());
-                    normalizedRecord.setFiletype("xml");
-                    normalizedRecord.setLocator(item.getDate());
-                    normalizedRecord.setSource(getCollectionName(item.getCollection()));
-                    normalizedRecord.setTitle(item.getTitle());
-                    mappedResult.add(normalizedRecord);
+        try {
+            for (CollectionResults coll : results.getCollectionResults()) {
+                total = compareTotal(total, coll.getResult().getTotal());
+                if (coll.getResult().getItem() != null) {
+                    for (Item item : coll.getResult().getItem()) {
+                        NormalizedRecord normalizedRecord = new NormalizedRecord();
+                        normalizedRecord.setCollection(item.getCollection());
+                        normalizedRecord.setDate(item.getDisplay_date());
+                        //  normalizedRecord.setDescription(item.getDescription());
+                        normalizedRecord.setId(item.getDate());
+                        normalizedRecord.setHits(item.getHits());
+                        normalizedRecord.setFiletype("xml");
+                        normalizedRecord.setLocator(item.getDate());
+                        normalizedRecord.setSource(getCollectionName(item.getCollection()));
+                        normalizedRecord.setTitle(item.getTitle());
+                        mappedResult.add(normalizedRecord);
+                    }
                 }
             }
+            normalizedResult.setRecords(mappedResult);
+            NormalizedPager normalizedPager = new NormalizedPager();
+            normalizedPager.setPagingIncrement("10");
+            normalizedPager.setStartIndex(offset);
+            normalizedPager.setTotalRecs(total);
+            normalizedResult.setPager(normalizedPager);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        normalizedResult.setRecords(mappedResult);
-        NormalizedPager normalizedPager = new NormalizedPager();
-        normalizedPager.setPagingIncrement("10");
-        normalizedPager.setStartIndex(offset);
-        normalizedPager.setTotalRecs(total);
-        normalizedResult.setPager(normalizedPager);
 
         return normalizedResult;
     }
+
+
 
     private Integer compareTotal(Integer total, String latestTotal) {
 

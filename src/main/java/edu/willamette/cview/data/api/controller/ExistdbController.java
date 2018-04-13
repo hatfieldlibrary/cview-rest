@@ -27,25 +27,26 @@ public class ExistdbController {
     @Autowired
     Pagination pagination;
 
-    @RequestMapping(value="/exist", method=GET)
+    @RequestMapping(value = "/exist/search", method = GET)
     @ResponseBody
     public HttpEntity<ExistDbResponse> search(@RequestParam(value = "term") String searchTerm,
                                               @RequestParam(value = "offset") String offset,
-                                              @RequestParam(value="mode", defaultValue = "all") String mode ) {
+                                              @RequestParam(value = "mode", defaultValue = "all") String mode,
+                                              @RequestParam(value = "collections", defaultValue = "all") String collections) {
 
-        NormalizedResult result = existDbRepository.execQuery(searchTerm, offset, mode);
+        NormalizedResult result = existDbRepository.execQuery(searchTerm, offset, mode, collections);
         ExistDbResponse response = new ExistDbResponse(result);
-        response.add(linkTo(methodOn(ExistdbController.class).search(searchTerm, offset, mode)).withSelfRel());
+        response.add(linkTo(methodOn(ExistdbController.class).search(searchTerm, offset, mode, collections)).withSelfRel());
         boolean hasNext = pagination.hasNext(result.getPager(), offset);
         boolean hasPrev = pagination.hasPrev(offset);
         if (hasNext) {
             String nextOffset = pagination.getOffset("next", offset, result.getPager());
-            Link ordersLink = linkTo(methodOn(CdmController.class).search(searchTerm, nextOffset, mode)).withRel("next");
+            Link ordersLink = linkTo(methodOn(CdmController.class).search(searchTerm, nextOffset, mode, collections)).withRel("next");
             response.add(ordersLink);
         }
         if (hasPrev) {
             String prevOffset = pagination.getOffset("prev", offset, result.getPager());
-            Link ordersLink = linkTo(methodOn(CdmController.class).search(searchTerm, prevOffset, mode)).withRel("prev");
+            Link ordersLink = linkTo(methodOn(CdmController.class).search(searchTerm, prevOffset, mode, collections)).withRel("prev");
             response.add(ordersLink);
         }
 

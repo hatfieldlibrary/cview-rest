@@ -1,4 +1,4 @@
-package model.contentdm;
+package edu.willamette.cview.data.api.model.contentdm;
 
 import java.util.List;
 

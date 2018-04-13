@@ -1,4 +1,4 @@
-package model;
+package edu.willamette.cview.data.api.model;
 
 import io.reactivex.annotations.NonNull;
 import org.springframework.stereotype.Component;

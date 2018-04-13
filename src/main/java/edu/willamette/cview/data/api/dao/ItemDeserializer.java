@@ -2,8 +2,8 @@ package edu.willamette.cview.data.api.dao;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
-import model.existdb.Hits;
-import model.existdb.Item;
+import edu.willamette.cview.data.api.model.existdb.Hits;
+import edu.willamette.cview.data.api.model.existdb.Item;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;

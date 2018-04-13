@@ -2,7 +2,7 @@ package edu.willamette.cview.data.api.dao;
 
 import com.google.gson.Gson;
 import edu.willamette.cview.data.api.repository.Domains;
-import model.contentdm.Result;
+import edu.willamette.cview.data.api.model.contentdm.Result;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
@@ -19,13 +19,13 @@ public class ContentdmDao {
 
     Logger log = LogManager.getLogger(ContentdmDao.class);
 
-    final String cdmHost;
-    final String collection;
-    final String query;
-    final String sort;
-    final String rootPath;
-    final String returnFields;
-    final String setSize;
+    private final String cdmHost;
+    private final String collection;
+    private final String query;
+    private final String sort;
+    private final String rootPath;
+    private final String returnFields;
+    private final String setSize;
 
     public ContentdmDao() {
 

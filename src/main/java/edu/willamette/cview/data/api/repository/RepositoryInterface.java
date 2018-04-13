@@ -1,6 +1,6 @@
 package edu.willamette.cview.data.api.repository;
 
-import model.NormalizedResult;
+import edu.willamette.cview.data.api.model.NormalizedResult;
 
 public interface RepositoryInterface {
 

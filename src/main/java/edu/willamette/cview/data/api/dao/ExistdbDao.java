@@ -4,7 +4,7 @@ package edu.willamette.cview.data.api.dao;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import edu.willamette.cview.data.api.repository.Domains;
-import model.existdb.CombinedResult;
+import edu.willamette.cview.data.api.model.existdb.CombinedResult;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
@@ -17,11 +17,11 @@ import java.net.URL;
 @Component
 public class ExistdbDao {
 
-    final String existHost;
-    final String collection;
-    final String query;
-    final String rootPath;
-    final String setSize;
+    private final String existHost;
+    private final String collection;
+    private final String query;
+    private final String rootPath;
+    private final String setSize;
 
 
     public ExistdbDao() {
@@ -32,7 +32,6 @@ public class ExistdbDao {
         rootPath = Domains.EXIST.getRootPath();
         setSize = Domains.EXIST.getSetSize();
     }
-
 
     public CombinedResult execQuery(String terms, String offset) {
 
@@ -54,8 +53,6 @@ public class ExistdbDao {
             while ((inputLine = in.readLine()) != null) {
                 content.append(inputLine);
             }
-            String res = collection.toString();
-            
             existResult = gson.fromJson(content.toString(), CombinedResult.class);
             in.close();
             con.disconnect();

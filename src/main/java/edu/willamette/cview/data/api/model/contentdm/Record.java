@@ -1,20 +1,18 @@
-package model;
+package edu.willamette.cview.data.api.model.contentdm;
 
-import model.existdb.Hits;
-
-import java.util.List;
-
-public class NormalizedRecord {
+public class Record {
 
     private String collection;
-    private String id;
+    private String pointer;
     private String filetype;
-    private String description;
+    private Integer parentobject;
+    private String descri;
     private String title;
     private String source;
     private String date;
-    private List<Hits> hits;
-    private String locator;
+    private String find;
+
+    public Record() {}
 
     public String getCollection() {
         return collection;
@@ -24,12 +22,12 @@ public class NormalizedRecord {
         this.collection = collection;
     }
 
-    public String getId() {
-        return id;
+    public String getPointer() {
+        return pointer;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setPointer(String pointer) {
+        this.pointer = pointer;
     }
 
     public String getFiletype() {
@@ -40,12 +38,20 @@ public class NormalizedRecord {
         this.filetype = filetype;
     }
 
-    public String getDescription() {
-        return description;
+    public Integer getParentobject() {
+        return parentobject;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setParentobject(Integer parentobject) {
+        this.parentobject = parentobject;
+    }
+
+    public String getDescri() {
+        return descri;
+    }
+
+    public void setDescri(String descri) {
+        this.descri = descri;
     }
 
     public String getTitle() {
@@ -68,23 +74,16 @@ public class NormalizedRecord {
         return date;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setDate(String bdate) {
+        this.date = bdate;
     }
 
-    public String getLocator() {
-        return locator;
+    public String getFind() {
+        return find;
     }
 
-    public void setLocator(String locator) {
-        this.locator = locator;
+    public void setFind(String find) {
+        this.find = find;
     }
 
-    public List<Hits> getHits() {
-        return hits;
-    }
-
-    public void setHits(List<Hits> hits) {
-        this.hits = hits;
-    }
 }

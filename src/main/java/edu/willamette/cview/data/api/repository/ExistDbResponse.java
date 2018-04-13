@@ -2,9 +2,8 @@ package edu.willamette.cview.data.api.repository;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import model.NormalizedResult;
+import edu.willamette.cview.data.api.model.NormalizedResult;
 import org.springframework.hateoas.ResourceSupport;
-import org.springframework.stereotype.Component;
 
 public class ExistDbResponse extends ResourceSupport {
 

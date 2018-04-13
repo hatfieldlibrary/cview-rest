@@ -1,13 +1,13 @@
 package edu.willamette.cview.data.api.repository;
 
 import edu.willamette.cview.data.api.dao.ExistdbDao;
-import model.NormalizedPager;
-import model.NormalizedRecord;
-import model.NormalizedResult;
+import edu.willamette.cview.data.api.model.NormalizedPager;
+import edu.willamette.cview.data.api.model.NormalizedRecord;
+import edu.willamette.cview.data.api.model.NormalizedResult;
 
-import model.existdb.CollectionResults;
-import model.existdb.Item;
-import model.existdb.CombinedResult;
+import edu.willamette.cview.data.api.model.existdb.CollectionResults;
+import edu.willamette.cview.data.api.model.existdb.Item;
+import edu.willamette.cview.data.api.model.existdb.CombinedResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

@@ -1,4 +1,4 @@
-package model;
+package edu.willamette.cview.data.api.model;
 
 public class NormalizedPager {
 

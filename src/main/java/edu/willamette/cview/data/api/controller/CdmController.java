@@ -3,7 +3,7 @@ package edu.willamette.cview.data.api.controller;
 import edu.willamette.cview.data.api.repository.ContentdmResponse;
 import edu.willamette.cview.data.api.repository.Pagination;
 import edu.willamette.cview.data.api.repository.RepositoryInterface;
-import model.NormalizedResult;
+import edu.willamette.cview.data.api.model.NormalizedResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpEntity;

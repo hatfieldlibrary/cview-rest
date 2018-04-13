@@ -1,4 +1,4 @@
-package model.existdb;
+package edu.willamette.cview.data.api.model.existdb;
 
 import com.google.gson.annotations.Expose;
 

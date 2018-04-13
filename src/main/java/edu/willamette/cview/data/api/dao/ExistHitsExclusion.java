@@ -2,7 +2,7 @@ package edu.willamette.cview.data.api.dao;
 
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
-import model.existdb.Item;
+import edu.willamette.cview.data.api.model.existdb.Item;
 
 public class ExistHitsExclusion  implements ExclusionStrategy {
     @Override

@@ -1,6 +1,6 @@
 package edu.willamette.cview.data.api.repository;
 
-import model.NormalizedPager;
+import edu.willamette.cview.data.api.model.NormalizedPager;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -15,7 +15,7 @@ public class Pagination {
 
     public boolean hasPrev(String offset) {
 
-        return Integer.valueOf(offset) > 0;
+        return Integer.valueOf(offset) > 1;
     }
 
     public String getOffset(String direction, String offset, NormalizedPager pager) {
@@ -30,7 +30,7 @@ public class Pagination {
         }
         if (direction.contentEquals("prev")) {
             Integer offsetValue = Integer.valueOf(offset);
-            if (offsetValue > 0) {
+            if (offsetValue > 1) {
                 Integer tmpOffset = offsetValue - increment;
                 newOffset = Integer.toString(tmpOffset);
             }

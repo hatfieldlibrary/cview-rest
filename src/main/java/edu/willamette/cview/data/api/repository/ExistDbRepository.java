@@ -36,21 +36,12 @@ public class ExistDbRepository implements RepositoryInterface {
         List<NormalizedRecord> mappedResult = new ArrayList<>();
         Integer total = 0;
         try {
+            ExistUtils existUtils = new ExistUtils();
             for (CollectionResults coll : results.getCollectionResults()) {
                 total = compareTotal(total, coll.getResult().getTotal());
                 if (coll.getResult().getItem() != null) {
                     for (Item item : coll.getResult().getItem()) {
-                        NormalizedRecord normalizedRecord = new NormalizedRecord();
-                        normalizedRecord.setCollection(item.getCollection());
-                        normalizedRecord.setDate(item.getDisplay_date());
-                        //  normalizedRecord.setDescription(item.getDescription());
-                        normalizedRecord.setId(item.getDate());
-                        normalizedRecord.setHits(item.getHits());
-                        normalizedRecord.setFiletype("xml");
-                        normalizedRecord.setLocator(item.getDate());
-                        normalizedRecord.setSource(getCollectionName(item.getCollection()));
-                        normalizedRecord.setTitle(item.getTitle());
-                        mappedResult.add(normalizedRecord);
+                        mappedResult.add(existUtils.getNormalizedRecord(item));
                     }
                 }
             }
@@ -67,8 +58,6 @@ public class ExistDbRepository implements RepositoryInterface {
         return normalizedResult;
     }
 
-
-
     private Integer compareTotal(Integer total, String latestTotal) {
 
         if (total < Integer.valueOf(latestTotal)) {
@@ -76,20 +65,6 @@ public class ExistDbRepository implements RepositoryInterface {
         }
         return total;
 
-    }
-    private String getCollectionName(String coll) {
-
-        switch(coll) {
-            case "collegian": return "Willamette University Collegian";
-            case "wallulah": return "Wallulah (Student Yearbook)";
-            case "scene": return "Alumni Publications";
-            case "bulletinscatalogs": return "Willamette University Catalogs & Bulletins";
-            case "commencement": return "Commencement Programs";
-            case "puritan": return "Willamette University Puritan";
-            case "scrapbooks": return "Scrapbooks";
-            case "handbooks": return "Student Handbooks - College of Liberal Arts";
-            default: return "";
-        }
     }
 
 }

@@ -8,10 +8,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -59,25 +55,10 @@ public class ContentdmDao {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-        Result cdmResult = null;
-        try {
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(con.getInputStream()));
-            String inputLine;
-            StringBuffer content = new StringBuffer();
-            while ((inputLine = in.readLine()) != null) {
-                content.append(inputLine);
-            }
-            cdmResult = gson.fromJson(content.toString(), Result.class);
-            in.close();
-            con.disconnect();
-
-        } catch (IOException e) {
-            log.error("Unable to retrieve data for url: " + url);
-            e.printStackTrace();
-        }
-        return (cdmResult);
+        HttpConnection httpConnection = new HttpConnection();
+        StringBuffer response = httpConnection.request(url);
+        Result cdmResult = gson.fromJson(response.toString(), Result.class);
+        return cdmResult;
     }
 
     /**
